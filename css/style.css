@@ -10,10 +10,3 @@ body {
 iframe {
     border: none;
 }
-
-.explain {
-    display: inline-block;
-    padding: 0 10px;
-    text-align: left;
-    border: 1px solid #000;
-}
