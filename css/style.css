@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+body {
+    text-align: center;
+}
+
+.game {
+    border: none;
+}
+
+.explain {
+    display: inline-block;
+    text-align: left;
+    line-height: 1.7;
+    border: 1px solid green;
+    padding: 5px;
+}
