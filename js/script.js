@@ -2,7 +2,7 @@
 const FPS                   = 60;
 const G                     = 0.02;
 
-const SCREEN_SIZE_W         = 400;
+const SCREEN_SIZE_W         = 380;
 const SCREEN_SIZE_H         = 500;
 
 const BIRD_SIZE_W           = 30; 
@@ -287,7 +287,7 @@ function render() {
     DrawText(String(score), 30, 60, "48px san-serif", "#000");
 
     if (isPause) {
-        DrawText("Please Press Space Key", 30, canvas.height / 2, "30px san-serif", "#000");
+        DrawText("Please Press Space Key", 20, canvas.height / 2, "30px san-serif", "#000");
     }
 }
 

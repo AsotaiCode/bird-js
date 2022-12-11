@@ -2,16 +2,18 @@
 
 body {
     text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
-.game {
+iframe {
     border: none;
 }
 
 .explain {
     display: inline-block;
+    padding: 0 10px;
     text-align: left;
-    line-height: 1.7;
-    border: 1px solid green;
-    padding: 5px;
+    border: 1px solid #000;
 }
