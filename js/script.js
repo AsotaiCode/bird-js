@@ -21,7 +21,7 @@ const START_POS_Y           = 0.3;
 
 const BLOCK_NUM             = Math.ceil(SCREEN_SIZE_H / BLOCK_SIZE_H);
 // 変数定義 /////////////////////////////////////////
-let startTime;
+let startTime = 0;
 let score = 0;
 let isPause = true;
 ////////////////////////////////////////////////////
@@ -57,7 +57,14 @@ class Rectangle {
     }
     draw(image) {
         context.drawImage(image, this.getLeft(), this.getTop(), this.w, this.h);
-    }   
+    }
+    checkHit(object) {
+        if (object.getLeft() > this.getRight()) return false;
+        if (object.getRight() < this.getLeft()) return false;
+        if (object.getTop() > this.getBottom()) return false;
+        if (object.getBottom() < this.getTop()) return false;
+        return true;
+    }
     getTop() {
         return this.y - this.h / 2;
     }
@@ -106,12 +113,10 @@ class Bird extends Rectangle {
             this.y += this.vy;
             if (this.getBottom() >= canvas.height) {
                 this.setBottom(canvas.height);
-                this.hit();
                 miss = true;
             }
             else if (this.getTop() <= 0) {
                 this.setTop(0);
-                this.hit();
                 miss = true;
             }
         }
@@ -144,13 +149,6 @@ class Block extends Rectangle {
     }
     draw() {
         super.draw(blockImage);
-    }
-    checkHit(object) {
-        if (object.getLeft() > this.getRight()) return false;
-        if (object.getRight() < this.getLeft()) return false;
-        if (object.getTop() > this.getBottom()) return false;
-        if (object.getBottom() < this.getTop()) return false;
-        return true;
     }
 }
 
@@ -238,19 +236,22 @@ function startLoop() {
 
 // メインループ
 function loop() {
-    let nowTime = performance.now();
-    let deltaTime = nowTime - startTime;
+    while (true) {
+        let nowTime = performance.now();
+        let deltaTime = nowTime - startTime;
 
-    if (deltaTime > 1000 / FPS) {
-        update(deltaTime);
-        render();
-        startTime = nowTime;
+        if (deltaTime > 1000 / FPS) {
+            update(deltaTime);
+            render();
+            startTime = nowTime;
+            break;
+        }
     }
 
     //ブラウザが再描画可能なタイミングでコールバック関数を実行
     requestAnimationFrame(loop);
 }
-
+ 
 // 更新
 function update(deltaTime) {
     if (!isPause) {
