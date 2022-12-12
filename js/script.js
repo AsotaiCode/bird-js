@@ -5,7 +5,7 @@ const G                     = 0.02;
 const SCREEN_SIZE_W         = 380;
 const SCREEN_SIZE_H         = 500;
 
-const BIRD_SIZE_W           = 30; 
+const BIRD_SIZE_W           = 30;
 const BIRD_SIZE_H           = 30;
 const BIRD_IMAGE_PATH       = "images/bird.png";
 const BIRD_IMAGE_MISS_PATH  = "images/bird_miss.png";
@@ -20,6 +20,9 @@ const START_POS_X           = 0.2;
 const START_POS_Y           = 0.3;
 
 const BLOCK_NUM             = Math.ceil(SCREEN_SIZE_H / BLOCK_SIZE_H);
+
+const MAP_BLANK             = 7;
+const MAP_INTERVAL          = 400;
 // 変数定義 /////////////////////////////////////////
 let startTime = 0;
 let score = 0;
@@ -157,15 +160,21 @@ class Map {
     constructor() {
         this.blocks = []
         this.deltaX = 0;
-        this.blank = 7;
+        this.blank = MAP_BLANK;
         this.speed = 2.0;
-        this.interval = 400;
+        this.interval = MAP_INTERVAL;
         this.AddBlocks(0);
+
+        this.startSpeed = this.speed;
     }
     reset() {
         this.blocks.splice(0);
         this.deltaX = 0;
+        this.speed = this.startSpeed;
         this.AddBlocks(0);
+    }
+    levelUp() {
+        this.speed += 0.1;
     }
     update(deltaTime) {
         // すべてのブロックを移動
@@ -187,6 +196,8 @@ class Map {
         if (isPassed) {
             // あればスコアを増やす
             score++;
+            // スピードも少し増やす
+            this.levelUp();
         }
 
         // 左に過ぎ去ったブロックは削除する
@@ -236,16 +247,13 @@ function startLoop() {
 
 // メインループ
 function loop() {
-    while (true) {
-        let nowTime = performance.now();
-        let deltaTime = nowTime - startTime;
+    let nowTime = performance.now();
+    let deltaTime = nowTime - startTime;
 
-        if (deltaTime > 1000 / FPS) {
-            update(deltaTime);
-            render();
-            startTime = nowTime;
-            break;
-        }
+    if (deltaTime > 1000 / FPS) {
+        update(deltaTime);
+        render();
+        startTime = nowTime;
     }
 
     //ブラウザが再描画可能なタイミングでコールバック関数を実行
